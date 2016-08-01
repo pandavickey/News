@@ -19,11 +19,6 @@ class NewsItem extends Component {
 
   constructor(props){
     super(props);
-    this.updateReadSate = this.updateReadSate.bind(this);
-  }
-  updateReadSate() {
-    this.refs[TITLE_REF].setNativeProps({style: {color: '#777777'}});
-    this.props.onSelect();
   }
 
   render() {
@@ -33,9 +28,10 @@ class NewsItem extends Component {
         source={{uri: this.props.story.images[0]}}
         style={styles.cellImage} />
     }
-
     return (
-        <TouchableNativeFeedback>
+        <TouchableNativeFeedback onPress = {() => {
+          this.props.onSelect();
+        } }>
           <View style={styles.row}>
             <Text
               ref={TITLE_REF}

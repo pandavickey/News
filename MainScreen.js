@@ -36,7 +36,7 @@ class MainScreen extends Component {
     fetchThemes()
     .then((response) => {
       var theme = {
-        id:'0',
+        id:0,
         name:'首页',
       };
       response.others.unshift(theme);
@@ -76,7 +76,7 @@ class MainScreen extends Component {
             key={theme.id}
             tabLabel={theme.name.substring(0,2)}
             style={{ flex: 1 }}>
-          <NewsListScreen theme={theme}/>
+          <NewsListScreen theme={theme} navigator = {this.props.navigator}/>
           </View>);
         return typeView;
       })}
