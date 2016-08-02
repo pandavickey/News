@@ -8,6 +8,9 @@ export const getWindowWidth = () => {
   return Dimensions.get('window').width;
 }
 
+export const getWindowHeight = () => {
+  return Dimensions.get('window').height;
+}
 'use strict';
 
 export const parseDateFromYYYYMMdd = (str) => {

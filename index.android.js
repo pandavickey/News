@@ -6,13 +6,17 @@
 
 import React, {Component} from 'react';
 import {
+    StyleSheet,
+    View,
+    Text,
+    Image,
     AppRegistry,
     Navigator,
     BackAndroid,
 } from 'react-native';
 
 import {
-    getMainNavigator
+    getMainNavigatorRoute
 } from './NavigatorUtils';
 
 import SplashScreen from './SplashScreen';
@@ -26,11 +30,6 @@ class News extends Component {
             splashed: false,
         };
     }
-
-    configureScene() {
-        return Navigator.SceneConfigs.PushFromRight;
-    }
-
     componentDidMount() {
         this.timer = setTimeout(
             () => {
@@ -39,7 +38,9 @@ class News extends Component {
             5000,
         );
     }
-
+    componentWillUnmount() {
+        clearTimeout(this.timer);
+    }
     renderScene(route, navigator) {
         BackAndroid.addEventListener('hardwareBackPress', () => {
             if (navigator && navigator.getCurrentRoutes().length > 1) {
@@ -62,7 +63,7 @@ class News extends Component {
                 ref="navigator"
                 style={{flex: 1}}
                 renderScene={this.renderScene}
-                initialRoute={getMainNavigator()}
+                initialRoute={getMainNavigatorRoute()}
             />
         }
     }

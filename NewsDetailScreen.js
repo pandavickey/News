@@ -4,7 +4,6 @@ import React, { Component } from 'React';
 import {
     View,
     Text,
-    AppRegistry,
     WebView,
 } from 'react-native';
 

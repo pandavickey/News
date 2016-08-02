@@ -84,23 +84,6 @@ class SplashScreen extends Component {
 var styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  bottomContainer: {
-    position:'absolute',
-    bottom:20,
-    flexDirection: 'column',
-    justifyContent: 'center',
-  },
-  logo: {
-    resizeMode: 'contain',
-    height:60,
-    backgroundColor: 'transparent',
-  },
-  text: {
-    fontSize: 16,
-    alignSelf:'center',
-    color: 'white',
-    backgroundColor: 'transparent',
   }
 });
 

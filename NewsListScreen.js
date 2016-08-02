@@ -15,7 +15,7 @@ import {
 } from './DataSourceUtils';
 
 import {
-    getNewsDetailNavigator
+    getNewsDetailNavigatorRoute
 } from './NavigatorUtils';
 
 import NewsItem from './NewsItem';
@@ -57,9 +57,9 @@ class NewsListScreen extends Component {
     }
 
     toNewsDetail(story) {
-        var nav = getNewsDetailNavigator();
-        nav.story = story;
-        this.props.navigator.push(nav);
+        var route = getNewsDetailNavigatorRoute();
+        route.story = story;
+        this.props.navigator.push(route);
     }
     renderHeader() {
         if (this.props.theme.id === 0 && this.state.headerDataSource.getPageCount() > 0) {

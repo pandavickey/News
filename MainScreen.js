@@ -3,94 +3,66 @@
 import React, { Component } from 'React';
 import {
   Image,
-  StyleSheet,
   Text,
   View,
-  DrawerLayoutAndroid,
-  ToolbarAndroid,
-  BackAndroid,
-  TouchableOpacity,
 } from 'react-native';
 
-import {
-  fetchThemes,
-} from './DataSourceUtils';
+import TabNavigator from 'react-native-tab-navigator';
+import HomeScreen from './HomeScreen';
+import FindListScreen from './FindListScreen';
 
-import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
-import NewsListScreen from './NewsListScreen';
+const TITLE_NEWS = 'news';
+const TITLE_FIND = 'find';
+const TITLE_ME = 'me';
 
 class MainScreen extends Component {
 
   constructor(props) {
     super(props);
-  
     this.state = {
-      themes:null,
+      selectedTab:TITLE_NEWS,
     };
   }
-  componentDidMount() {
-    this.fetchThemeList();
-  }
-
-  fetchThemeList() {
-    fetchThemes()
-    .then((response) => {
-      var theme = {
-        id:0,
-        name:'首页',
-      };
-      response.others.unshift(theme);
-
-      this.setState({
-        themes:response.others.slice(0,8),
-      })
-    })
-    .catch((error) => {
-      console.error(error);
-    })
-    .done();
-  }
   render() {
-    if (!this.state.themes || this.state.themes.length === 0) {
-      return (
-        <View style={styles.centerEmpty}>
-          <Text>{'正在加载...'}</Text>
-        </View> );
-    }
     return (
-      <ScrollableTabView
-        renderTabBar={() =>
-          <DefaultTabBar
-            underlineHeight={2}
-            tabStyle={{ paddingBottom: 0 }}
-            textStyle={{ fontSize: 16 }}
-          />
-        }
-        tabBarBackgroundColor="#fcfcfc"
-        tabBarUnderlineColor="#3e9ce9"
-        tabBarActiveTextColor="#3e9ce9"
-        tabBarInactiveTextColor="#aaaaaa">
-         {this.state.themes.map((theme) => {
-        const typeView = (
-          <View
-            key={theme.id}
-            tabLabel={theme.name.substring(0,2)}
-            style={{ flex: 1 }}>
-          <NewsListScreen theme={theme} navigator = {this.props.navigator}/>
-          </View>);
-        return typeView;
-      })}
-    </ScrollableTabView>
+      <TabNavigator>
+        <TabNavigator.Item
+            selected={this.state.selectedTab === TITLE_NEWS}
+            title = {TITLE_NEWS}
+            renderIcon={() => <Image source={require('./img/icon_news.png')} />}
+            renderSelectedIcon={() => <Image source={require('./img/icon_news_press.png')} />}
+            onPress={() => this.setState({ selectedTab: TITLE_NEWS })}>
+          <HomeScreen
+              navigator={this.props.navigator}
+              route={this.props.route}/>
+        </TabNavigator.Item>
+        <TabNavigator.Item
+            selected={this.state.selectedTab === TITLE_FIND}
+            title = {TITLE_FIND}
+            renderIcon={() => <Image source={require('./img/icon_find.png')} />}
+            renderSelectedIcon={() => <Image source={require('./img/icon_find_press.png')} />}
+            onPress={() => this.setState({ selectedTab: TITLE_FIND })}>
+          <FindListScreen
+              navigator={this.props.navigator}
+              route={this.props.route}/>
+        </TabNavigator.Item>
+        <TabNavigator.Item
+            selected={this.state.selectedTab === TITLE_ME}
+            title = {TITLE_ME}
+            renderIcon={() => <Image source={require('./img/icon_me.png')} />}
+            renderSelectedIcon={() => <Image source={require('./img/icon_me_press.png')} />}
+            onPress={() => this.setState({ selectedTab: TITLE_ME })}>
+          <View style={{
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+            <Text>{'正在加载...'}</Text>
+          </View>
+        </TabNavigator.Item>
+      </TabNavigator>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  centerEmpty: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
 
 export default MainScreen;
