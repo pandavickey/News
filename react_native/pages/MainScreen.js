@@ -10,6 +10,7 @@ import {
 import TabNavigator from 'react-native-tab-navigator';
 import HomeScreen from './HomeScreen';
 import FindListScreen from './FindListScreen';
+import UserCenterScreen from './UserCenterScreen';
 
 const TITLE_NEWS = 'news';
 const TITLE_FIND = 'find';
@@ -29,8 +30,8 @@ class MainScreen extends Component {
         <TabNavigator.Item
             selected={this.state.selectedTab === TITLE_NEWS}
             title = {TITLE_NEWS}
-            renderIcon={() => <Image source={require('./img/icon_news.png')} />}
-            renderSelectedIcon={() => <Image source={require('./img/icon_news_press.png')} />}
+            renderIcon={() => <Image source={require('./../img/icon_news.png')} />}
+            renderSelectedIcon={() => <Image source={require('./../img/icon_news_press.png')} />}
             onPress={() => this.setState({ selectedTab: TITLE_NEWS })}>
           <HomeScreen
               navigator={this.props.navigator}
@@ -39,8 +40,8 @@ class MainScreen extends Component {
         <TabNavigator.Item
             selected={this.state.selectedTab === TITLE_FIND}
             title = {TITLE_FIND}
-            renderIcon={() => <Image source={require('./img/icon_find.png')} />}
-            renderSelectedIcon={() => <Image source={require('./img/icon_find_press.png')} />}
+            renderIcon={() => <Image source={require('./../img/icon_find.png')} />}
+            renderSelectedIcon={() => <Image source={require('./../img/icon_find_press.png')} />}
             onPress={() => this.setState({ selectedTab: TITLE_FIND })}>
           <FindListScreen
               navigator={this.props.navigator}
@@ -49,16 +50,10 @@ class MainScreen extends Component {
         <TabNavigator.Item
             selected={this.state.selectedTab === TITLE_ME}
             title = {TITLE_ME}
-            renderIcon={() => <Image source={require('./img/icon_me.png')} />}
-            renderSelectedIcon={() => <Image source={require('./img/icon_me_press.png')} />}
+            renderIcon={() => <Image source={require('./../img/icon_me.png')} />}
+            renderSelectedIcon={() => <Image source={require('./../img/icon_me_press.png')} />}
             onPress={() => this.setState({ selectedTab: TITLE_ME })}>
-          <View style={{
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-            <Text>{'正在加载...'}</Text>
-          </View>
+          <UserCenterScreen/>
         </TabNavigator.Item>
       </TabNavigator>
     );

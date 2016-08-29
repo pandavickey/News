@@ -17,7 +17,7 @@ import {
 
 import {
     fetchThemes,
-} from './DataSourceUtils';
+} from '../utils/DataSourceUtils';
 
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
 import NewsListScreen from './NewsListScreen';

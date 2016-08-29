@@ -10,8 +10,8 @@ import {
     TouchableNativeFeedback,
 } from 'react-native';
 
-import {fetchFindList} from './DataSourceUtils';
-import {getWebViewNavigatorRoute} from './NavigatorUtils';
+import {fetchFindList} from '../utils/DataSourceUtils';
+import {getWebViewNavigatorRoute} from '../utils/NavigatorUtils';
 
 class FindListScreen extends Component {
 

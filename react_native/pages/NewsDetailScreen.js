@@ -9,7 +9,7 @@ import {
 
 import {
     fetchNewsDetail,
-} from './DataSourceUtils';
+} from '../utils/DataSourceUtils';
 
 class NewsDetailScreen extends Component {
     constructor(props) {

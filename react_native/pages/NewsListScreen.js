@@ -12,11 +12,11 @@ import {
 
 import {
     fetchNews,
-} from './DataSourceUtils';
+} from '../utils/DataSourceUtils';
 
 import {
     getNewsDetailNavigatorRoute
-} from './NavigatorUtils';
+} from '../utils/NavigatorUtils';
 
 import NewsItem from './NewsItem';
 import ViewPager from 'react-native-viewpager';
