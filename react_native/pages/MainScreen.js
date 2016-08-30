@@ -3,8 +3,6 @@
 import React, { Component } from 'React';
 import {
   Image,
-  Text,
-  View,
 } from 'react-native';
 
 import TabNavigator from 'react-native-tab-navigator';

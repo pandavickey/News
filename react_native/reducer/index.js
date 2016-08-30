@@ -5,7 +5,9 @@
 
 import {combineReducers} from 'redux';
 import theme from '../reducer/theme'
+import news from '../reducer/news'
 const rootReducer = combineReducers({
     theme,
-})
+    news,
+});
 export default rootReducer;

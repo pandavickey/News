@@ -1,16 +1,12 @@
 'use strict';
 
-const API_START_IMAGE_URL = "http://news-at.zhihu.com/api/4/start-image/1080*1776";
-const API_NEWS_URL = 'http://news-at.zhihu.com/api/4/news/latest';
-const API_HISTORY_URL = 'http://news.at.zhihu.com/api/4/news/before/';
-const API_THEME_URL = 'http://news-at.zhihu.com/api/4/theme/';
-const API_THEMES_URL = 'http://news-at.zhihu.com/api/4/themes';
-const API_NEWS_DETAIL = 'http://news.at.zhihu.com/api/4/news/';
-const API_FIND_LIST = 'http://apis.baidu.com/txapi/mvtp/meinv?num=50';
-
-export const getStartImage = () => {
-    return fetch(API_START_IMAGE_URL).then((response) => response.json());
-}
+export const API_START_IMAGE_URL = "http://news-at.zhihu.com/api/4/start-image/1080*1776";
+export const API_NEWS_URL = 'http://news-at.zhihu.com/api/4/news/latest';
+export const API_HISTORY_URL = 'http://news.at.zhihu.com/api/4/news/before/';
+export const API_THEME_URL = 'http://news-at.zhihu.com/api/4/theme/';
+export const API_THEMES_URL = 'http://news-at.zhihu.com/api/4/themes';
+export const API_NEWS_DETAIL = 'http://news.at.zhihu.com/api/4/news/';
+export const API_FIND_LIST = 'http://apis.baidu.com/txapi/mvtp/meinv?num=50';
 
 export const fetchNews = (themeId, lastId) => {
     //首页
@@ -28,12 +24,7 @@ export const fetchNews = (themeId, lastId) => {
             url = API_THEME_URL + themeId;
         }
     }
-    console.log(url);
     return fetch(url).then((response) => response.json());
-}
-
-export const fetchThemes = () => {
-    return fetch(API_THEMES_URL).then((response) => response.json());
 }
 
 export const fetchNewsDetail = (id) => {

@@ -8,7 +8,7 @@ import * as types from '../utils/actionTypes';
 const initialState = {
     loading: true,
     themeList: {},
-}
+};
 
 export default function theme(state = initialState, action) {
     switch (action.type) {

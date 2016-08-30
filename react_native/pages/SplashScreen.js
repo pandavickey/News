@@ -13,13 +13,7 @@ import {
     getMainNavigatorRoute
 } from '../utils/NavigatorUtils';
 
-import {
-    getWindowWidth,
-} from '../utils/CommonUtils';
-
-import {
-    getStartImage,
-} from '../utils/DataSourceUtils';
+import {API_START_IMAGE_URL} from '../utils/DataSourceUtils';
 
 import Animated from 'Animated';
 
@@ -37,19 +31,21 @@ class SplashScreen extends Component {
         this.fetchData();
         this.timer = setTimeout(() => {
             this.toMainScreen();
-        }, 2000);
+        }, 3000);
     }
 
     componentWillUnmount() {
         clearTimeout(this.timer);
     }
+
     toMainScreen() {
         var route = getMainNavigatorRoute();
         this.props.navigator.resetTo(route);
     }
 
     fetchData() {
-        getStartImage()
+        fetch(API_START_IMAGE_URL)
+            .then((response) => response.json())
             .then((result) => {
                 if (result) {
                     this.setState({
@@ -83,14 +79,18 @@ class SplashScreen extends Component {
                     source={img}
                     style={{
                         flex: 1,
-                        width: getWindowWidth(),
-                        height: 1,
                         transform: [
                             {
                                 scale: this.state.bounceValue
                             },
                         ]
                     }}/>
+                <View style={styles.logoContainer}>
+                    <Image source={{uri: 'logo'}} style={{width: 20, height: 20}}/>
+                    <Text style={{fontSize: 14, color: '#000000', marginLeft: 10}}>
+                        {text}
+                    </Text>
+                </View>
             </View>
         );
     }
@@ -99,7 +99,20 @@ class SplashScreen extends Component {
 var styles = StyleSheet.create({
     container: {
         flex: 1,
-    }
+    },
+    logoContainer: {
+        position: 'absolute',
+        bottom: 20,
+        left: 50,
+        right: 50,
+        backgroundColor: '#FFFFFF',
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: 50,
+        flexDirection: 'row',
+    },
+
 });
 
 export default SplashScreen;

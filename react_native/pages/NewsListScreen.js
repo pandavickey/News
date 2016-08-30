@@ -10,9 +10,9 @@ import {
     TouchableOpacity,
 } from 'react-native';
 
-import {
-    fetchNews,
-} from '../utils/DataSourceUtils';
+import fetchNewsList from '../actions/news';
+
+import {connect} from 'react-redux';
 
 import {
     getNewsDetailNavigatorRoute
@@ -21,23 +21,22 @@ import {
 import NewsItem from './NewsItem';
 import ViewPager from 'react-native-viewpager';
 
+var dataState = {
+    dataSource: new ListView.DataSource({
+        rowHasChanged: (row1, row2) => row1 !== row2,
+        sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
+    }),
+    headerDataSource: new ViewPager.DataSource({
+        pageHasChanged: (p1, p2) => p1 !== p2,
+    })
+};
+
 
 class NewsListScreen extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            lastID: null,
-            newsList: null,
-            dataSource: new ListView.DataSource({
-                rowHasChanged: (row1, row2) => row1 !== row2,
-                sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
-            }),
-            headerDataSource: new ViewPager.DataSource({
-                pageHasChanged: (p1, p2) => p1 !== p2,
-            })
-        }
-        this.fetchNewsList = this.fetchNewsList.bind(this);
+        this.fetchList = this.fetchList.bind(this);
         this.onEndReached = this.onEndReached.bind(this);
         this.renderHeader = this.renderHeader.bind(this);
         this.renderPage = this.renderPage.bind(this);
@@ -45,15 +44,15 @@ class NewsListScreen extends Component {
     }
 
     componentDidMount() {
-        this.fetchNewsList(this.props.theme);
+        this.fetchList(this.props.theme);
     }
 
     componentWillReceiveProps(nextProps) {
-        this.fetchNewsList(nextProps.theme);
+        // this.fetchList(nextProps.theme);
     }
 
     onEndReached() {
-        this.fetchNewsList(this.props.theme);
+        this.fetchList(this.props.theme);
     }
 
     toNewsDetail(story) {
@@ -61,12 +60,13 @@ class NewsListScreen extends Component {
         route.story = story;
         this.props.navigator.push(route);
     }
-    renderHeader() {
-        if (this.props.theme.id === 0 && this.state.headerDataSource.getPageCount() > 0) {
+
+    renderHeader(headerDataSource) {
+        if (this.props.theme.id === 0 && headerDataSource.getPageCount() > 0) {
             return (
                 <View style={{flex: 1, height: 200}}>
                     <ViewPager
-                        dataSource={this.state.headerDataSource}
+                        dataSource={headerDataSource}
                         renderPage={this.renderPage}
                         isLoop={true}
                         autoPlay={true}/>
@@ -78,7 +78,7 @@ class NewsListScreen extends Component {
 
     renderPage(story) {
         return (
-            <TouchableOpacity style={{flex: 1}} onPress = {() => this.toNewsDetail(story)}>
+            <TouchableOpacity style={{flex: 1}} onPress={() => this.toNewsDetail(story)}>
                 <Image
                     source={{uri: story.image}}
                     style={styles.headerItem}>
@@ -97,67 +97,37 @@ class NewsListScreen extends Component {
         return (
             <NewsItem
                 story={story}
-                onSelect = {() => this.toNewsDetail(story)}/>
+                onSelect={() => this.toNewsDetail(story)}/>
         );
     }
 
-    fetchNewsList(theme) {
+    fetchList(theme) {
         var themeId = theme ? theme.id : 0;
-
-        fetchNews(themeId, this.state.lastID)
-            .then((response) => {
-                var newLastID;
-                var newNewsList = this.state.newsList;
-                var newheaderDataSource = this.state.headerDataSource;
-                if (themeId == 0) {
-                    newLastID = response.date;
-                } else {
-                    var length = response.stories.length;
-                    if (length > 0) {
-                        newLastID = response.stories[length - 1].id;
-                    }
-                }
-
-                if (this.state.lastID) {
-                    newNewsList = newNewsList.concat(response.stories);
-                } else {
-                    newNewsList = response.stories;
-                    if (response.top_stories && response.top_stories.length > 0) {
-                        newheaderDataSource = newheaderDataSource.cloneWithPages(response.top_stories.slice());
-                    }
-                }
-                this.setState({
-                    lastID: newLastID,
-                    newsList: newNewsList,
-                    dataSource: this.state.dataSource.cloneWithRows(newNewsList),
-                    headerDataSource: newheaderDataSource,
-                });
-
-            })
-            .catch((error) => {
-                console.error(error);
-            })
-            .done();
+        const {news, dispatch} = this.props;
+        dispatch(fetchNewsList(themeId, news.lastId[themeId]));
     }
 
     render() {
-        var content = this.state.dataSource.getRowCount() === 0 ?
-            <View style={styles.centerEmpty}>
+        const {news, theme} = this.props;
+        const themeId = theme.id;
+        var dataSource = news.news[themeId] ? dataState.dataSource.cloneWithRows(news.news[themeId]) : dataState.dataSource;
+        var headerDataSource = news.headNews[themeId] ? dataState.headerDataSource.cloneWithPages(news.headNews[themeId]) : dataState.headerDataSource;
+        return (!news.news[themeId] || news.news[themeId].length === 0 ) ?
+            (<View style={styles.centerEmpty}>
                 <Text>{'正在加载...'}</Text>
-            </View> :
-            <ListView
+            </View>) :
+            (<ListView
                 ref="listview"
                 style={styles.listview}
-                dataSource={this.state.dataSource}
+                dataSource={dataSource}
                 renderRow={this.renderRow}
                 onEndReached={this.onEndReached}
                 automaticallyAdjustContentInsets={false}
                 keyboardDismissMode="on-drag"
                 keyboardShouldPersistTaps={true}
                 showsVerticalScrollIndicator={false}
-                renderHeader={this.renderHeader}
-            />;
-        return content;
+                renderHeader={() => this.renderHeader(headerDataSource)}
+            />);
     }
 }
 var styles = StyleSheet.create({
@@ -188,4 +158,11 @@ var styles = StyleSheet.create({
     },
 });
 
-export default NewsListScreen;
+function mapStateToProps(state) {
+    const {news} = state;
+    return {
+        news
+    };
+}
+
+export default connect(mapStateToProps)(NewsListScreen);
