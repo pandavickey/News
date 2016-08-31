@@ -47,10 +47,6 @@ class NewsListScreen extends Component {
         this.fetchList(this.props.theme);
     }
 
-    componentWillReceiveProps(nextProps) {
-        // this.fetchList(nextProps.theme);
-    }
-
     onEndReached() {
         this.fetchList(this.props.theme);
     }
@@ -62,7 +58,7 @@ class NewsListScreen extends Component {
     }
 
     renderHeader(headerDataSource) {
-        if (this.props.theme.id === 0 && headerDataSource.getPageCount() > 0) {
+        if (headerDataSource && headerDataSource.getPageCount() > 0) {
             return (
                 <View style={{flex: 1, height: 200}}>
                     <ViewPager
@@ -70,8 +66,7 @@ class NewsListScreen extends Component {
                         renderPage={this.renderPage}
                         isLoop={true}
                         autoPlay={true}/>
-                </View>
-            );
+                </View>);
         }
         return null;
     }
@@ -90,7 +85,7 @@ class NewsListScreen extends Component {
                     </View>
                 </Image>
             </TouchableOpacity>
-        )
+        );
     }
 
     renderRow(story) {

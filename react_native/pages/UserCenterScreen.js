@@ -18,13 +18,13 @@ class UserCenterScreen extends Component {
     }
 
     render() {
-        return (<View style={{
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
-        }}>
-            <Text>{'正在加载中...'}</Text>
-        </View>);
+        return (
+            <View style={{
+                flex: 1,
+                alignItems: 'center',
+                justifyContent: 'center',}}>
+                <Text>{'正在设计中'}</Text>
+            </View>);
     }
 }
 export default UserCenterScreen;
